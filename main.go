@@ -1,6 +1,7 @@
 package main
 
 import (
+	"booking-app/helper"
 	"fmt"
 	"strings"
 )
@@ -18,10 +19,10 @@ func main() {
 	for {
 		firstName, lastName, email, userTickets := getUserInput()
 
-		isValidName, isValidEmail, isValidTicketNumber := valididateInput(firstName, lastName, email, userTickets, remainingTickets)
+		isValidName, isValidEmail, isValidTicketNumber := helper.ValididateInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidTicketNumber && isValidEmail && isValidName {
-			bookTicket(remainingTickets, userTickets, firstName, lastName, conferenceName, email)
+			bookTicket(userTickets, firstName, lastName, conferenceName, email)
 
 			firstNames := getFirstNames()
 			fmt.Printf("Debug Message: Booking by Firstnames only:  %v\n", firstNames)
@@ -60,14 +61,6 @@ func getFirstNames() []string {
 	return firstNames
 }
 
-func valididateInput(firstName string, lastName string, email string, userTickets uint, remainingTickets uint) (bool, bool, bool) {
-	isValidName := len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
-
-	return isValidName, isValidEmail, isValidTicketNumber
-}
-
 func getUserInput() (string, string, string, uint) {
 	var firstName string
 	var lastName string
@@ -88,7 +81,7 @@ func getUserInput() (string, string, string, uint) {
 	// fmt.Println("length = ", len(bookings))
 	return firstName, lastName, email, userTickets
 }
-func bookTicket(remainingTickets uint, userTickets uint, firstName string, lastName string, conferenceName string, email string) {
+func bookTicket(userTickets uint, firstName string, lastName string, conferenceName string, email string) {
 	remainingTickets = remainingTickets - userTickets
 	fullName := firstName + " " + lastName
 	bookings = append(bookings, fullName)
